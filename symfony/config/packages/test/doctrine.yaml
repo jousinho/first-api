@@ -1,0 +1,5 @@
+# config/packages/test/doctrine.yaml
+doctrine:
+    dbal:
+        url: '%env(resolve:DATABASE_URL)%'
+        server_version: '8.0'
