@@ -1,0 +1,27 @@
+{# src/Infrastructure/Http/Resources/views/music/artists.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Artistas de Rock{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>🎸 Artistas de Rock Legendarios</h1>
+    
+    <div class="row">
+        {% for artist in artists %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ artist.strArtistThumb }}" class="card-img-top" alt="{{ artist.strArtist }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ artist.strArtist }}</h5>
+                        <p class="card-text">
+                            <strong>Género:</strong> {{ artist.strGenre }}<br>
+                            <strong>Año:</strong> {{ artist.intFormedYear }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
