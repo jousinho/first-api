@@ -1,6 +1,6 @@
 <?php
 // src/Infrastructure/Http/MusicController.php
-namespace App\Infrastructure\Http;
+namespace App\Infrastructure\Http\Controllers;
 
 use App\Application\UseCase\GetMusicArtistsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
