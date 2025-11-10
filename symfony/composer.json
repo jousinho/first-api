@@ -41,7 +41,8 @@
         "symfony/web-link": "*",
         "symfony/yaml": "*",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0"
+        "twig/twig": "^2.12|^3.0",
+        "ramsey/uuid": "^4.0"
     },
     "require-dev": {
         "phpstan/phpdoc-parser": "^1.20",

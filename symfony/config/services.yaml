@@ -20,9 +20,16 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Infrastructure/Http/' # Excluir la antigua ubicación
+            - '../src/Tests/'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Application\UseCase\User\RegisterUseCase:
+        autowire: true
+        public: true
+        arguments:
+            - '@App\Domain\Repository\UserRepositoryInterface'
+    
 
     # Registra automáticamente todo en Infrastructure
     App\Infrastructure\:
@@ -39,8 +46,17 @@ services:
         resource: '../src/Application/*'
         exclude: '../src/Application/{DTO}'    
 
+     # ¡AÑADE ESTO para registrar tus Use Cases!
+    App\Application\UseCase\:
+        resource: '../src/Application/UseCase/'
+        autowire: true
+        public: true  # Importante para tests
+    
+
     # Bind de interfaces de dominio a implementaciones
     #App\Domain\Repository\ExampleRepositoryInterface: '@App\Infrastructure\Persistence\ExampleRepositoryImpl'    
-    App\Application\UseCase\EjemploUseCaseInterface: '@App\Application\UseCase\EjemploUseCase'
-    App\Domain\Repository\ProductRepositoryInterface: '@App\Infrastructure\Persistence\DoctrineProductRepository'
+    #App\Application\UseCase\EjemploUseCaseInterface: '@App\Application\UseCase\EjemploUseCase'
+    #App\Domain\Repository\ProductRepositoryInterface: '@App\Infrastructure\Persistence\DoctrineProductRepository'
+    App\Domain\Repository\UserRepositoryInterface: '@App\Infrastructure\Persistence\UserRepository'
+    
     
