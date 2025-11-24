@@ -16,7 +16,7 @@ jobs:
 
     - name: Run all test suites
       run: |
-        chmod +x ./scripts/*.sh
-        ./scripts/test-unit.sh
-        ./scripts/test-integration.sh  
-        ./scripts/test-functional.sh
+        chmod +x ./symfony/scripts/*.sh
+        ./symfony/scripts/test-unit.sh
+        ./symfony/scripts/test-integration.sh  
+        ./symfony/scripts/test-functional.sh
