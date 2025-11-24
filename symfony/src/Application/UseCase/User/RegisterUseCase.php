@@ -5,6 +5,7 @@ namespace App\Application\UseCase\User;
 use App\Domain\Model\User;
 use App\Domain\Repository\UserRepositoryInterface;
 use App\Application\Exception\InvalidArgumentException;
+use App\Infrastructure\Http\Commands\RegisterUserCommand;
 
 class RegisterUseCase
 {
@@ -12,17 +13,21 @@ class RegisterUseCase
         private UserRepositoryInterface $repository
     ) {}
 
-    public function register(string $name, string $email, string $plainPassword): User
+    public function register(RegisterUserCommand $command): User
     {
         try {
-            $user = User::create($name, $email, $plainPassword);
+            $user = User::create(
+                $command->name(), 
+                $command->email(), 
+                $command->plainPassword()
+            );
         } catch (\InvalidArgumentException $e) {
             // TODO exception
-            throw new InvalidArgumentException();
+            throw new InvalidArgumentException($e->getMessage());
         }
 
         $this->repository->save($user);
-            
+
         return $user;
     }
 }

@@ -4,12 +4,17 @@ namespace App\Infrastructure\Http\Commands;
 
 class RegisterUserCommand
 {
-    public function __construct(
+    private function __construct(
         public readonly string $name,
         public readonly string $email, 
         public readonly string $plainPassword
     ) {
         $this->validate();
+    }
+
+    public static function create(string $name, string $email, string $plainPassword): self
+    {
+        return new self($name, $email, $plainPassword);
     }
 
     private function validate(): void

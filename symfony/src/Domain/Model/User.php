@@ -72,16 +72,14 @@ class User
         return password_hash($plainPassword, PASSWORD_DEFAULT);
     }
 
-    // Método para verificar contraseña
     public function verifyPassword(string $plainPassword): bool
     {
         return password_verify($plainPassword, $this->password);
     }
 
-    // Getters
     public function id(): UserId 
     {
-        return $this->id;
+        return UserId::fromString($this->uid);
     }
 
     public function name(): string 

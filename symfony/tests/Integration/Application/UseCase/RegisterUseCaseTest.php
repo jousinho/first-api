@@ -7,6 +7,7 @@ use App\Domain\Repository\UserRepositoryInterface;
 use App\Domain\Model\User;
 use App\Tests\ResetDatabaseTrait;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Infrastructure\Http\Commands\RegisterUserCommand;
 
 final class RegisterUseCaseTest extends KernelTestCase
 {
@@ -29,14 +30,18 @@ final class RegisterUseCaseTest extends KernelTestCase
 
     public function test_registering_user_with_correct_data__should_return_expected_object(): void
     {
-        $result = $this->registerUseCase->register('mi nombre', 'mail@mail.com', 'plainpassword');
+        $command = RegisterUserCommand::create('mi nombre', 'mail@mail.com', 'plainpassword');
+        
+        $result = $this->registerUseCase->register($command);
 
         $this->assertInstanceOf(User::class, $result);
     }
 
     public function test_registering_user_with_correct_data__should_return_expected_object_with_expected_data(): void
     {
-        $result = $this->registerUseCase->register('mi nombre', 'mail@mail.com', 'plainpassword');
+        $command = RegisterUserCommand::create('mi nombre', 'mail@mail.com', 'plainpassword');
+
+        $result = $this->registerUseCase->register($command);
 
         $this->assertInstanceOf(User::class, $result);
         $this->assertSame('mi nombre', $result->name());
@@ -46,7 +51,9 @@ final class RegisterUseCaseTest extends KernelTestCase
 
     public function test_registering_user_with_correct_data__should_persist_it(): void
     {
-        $result = $this->registerUseCase->register('mi nombre', 'mail@mail.com', 'plainpassword');
+        $command = RegisterUserCommand::create('mi nombre', 'mail@mail.com', 'plainpassword');
+
+        $result = $this->registerUseCase->register($command);
 
         $this->assertInstanceOf(User::class, $result);
 

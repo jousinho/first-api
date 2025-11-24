@@ -9,7 +9,7 @@ class RegisterUserCommandTest extends TestCase
 {
     public function test_valid_command_should_work(): void
     {
-        $command = new RegisterUserCommand('John', 'john@test.com', 'password123');
+        $command = RegisterUserCommand::create('John', 'john@test.com', 'password123');
         
         $this->assertEquals('John', $command->name());
         $this->assertEquals('john@test.com', $command->email());
@@ -19,6 +19,6 @@ class RegisterUserCommandTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         
-        new RegisterUserCommand('John', 'invalid-email', 'password123');
+        RegisterUserCommand::create('John', 'invalid-email', 'password123');
     }
 }

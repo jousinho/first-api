@@ -2,13 +2,17 @@
 
 namespace App\Tests\Functional\Infrastructure\Http\Controllers;
 
-use App\Application\DTO\RegisterUserCommand;
+use App\Infrastructure\Http\Commands\RegisterUserCommand;
 use App\Application\UseCase\User\RegisterUseCase;
 use App\Domain\Model\User;
+use App\Domain\Exception\UserAlreadyExistsException;
+use App\Domain\Exception\InvalidEmailException;
 use App\Infrastructure\Http\Controllers\RegisterUserController;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use App\Domain\ValueObject\UserId;
+
 
 class RegisterUserControllerTest extends TestCase
 {
@@ -23,17 +27,18 @@ class RegisterUserControllerTest extends TestCase
 
     public function test_handle_registration_with_valid_data_should_return_201(): void
     {
+        $userId = UserId::create();
+        
         $user = $this->createMock(User::class);
-        $user->method('getId')->willReturn('user-123');
+        $user->method('id')->willReturn($userId);
+        $user->method('name')->willReturn('John Doe');
+        $user->method('email')->willReturn('john@example.com');
+        $user->method('verifyPassword')->willReturn(true);
         
         $this->registerUseCase
             ->expects($this->once())
-            ->method('execute')
-            ->with($this->callback(function (RegisterUserCommand $command) {
-                return $command->getName() === 'John Doe' 
-                    && $command->getEmail() === 'john@example.com'
-                    && $command->getPlainPassword() === 'password123';
-            }))
+            ->method('register')
+            ->with(RegisterUserCommand::create('John Doe', 'john@example.com', 'password123'))
             ->willReturn($user);
 
         $request = new Request([], [], [], [], [], [], json_encode([
@@ -42,67 +47,35 @@ class RegisterUserControllerTest extends TestCase
             'password' => 'password123'
         ]));
 
-        // Act
-        $response = $this->controller->handleRegistration($request);
+        $response = $this->controller->register($request);
 
-        // Assert
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(201, $response->getStatusCode());
         
         $responseData = json_decode($response->getContent(), true);
         $this->assertEquals([
-            'user_id' => 'user-123',
+            'user_id' => $userId->getValue(),
             'message' => 'User registered successfully'
         ], $responseData);
     }
 
-    public function test_handle_registration_with_missing_data_should_throw_exception(): void
+    public function test_handle_registration_with_invalid_json_should_return_400(): void
     {
-        // Arrange
-        $this->registerUseCase
-            ->expects($this->never())
-            ->method('execute');
+        $request = new Request([], [], [], [], [], [], 'invalid-json{');
 
-        $request = new Request([], [], [], [], [], [], json_encode([
-            'name' => 'John Doe'
-            // email and password missing
-        ]));
+        $response = $this->controller->register($request);
 
-        // Assert
-        $this->expectException(\InvalidArgumentException::class);
+        $this->assertEquals(400, $response->getStatusCode());
         
-        // Act
-        $this->controller->handleRegistration($request);
+        $responseData = json_decode($response->getContent(), true);
+        $this->assertEquals(['error' => 'Invalid input data', 'details' => 'Name cannot be empty'], $responseData);
     }
 
-    public function test_handle_registration_with_invalid_email_should_throw_exception(): void
+    public function test_handle_registration_when_user_already_exists_should_return_409(): void
     {
-        // Arrange
-        $this->registerUseCase
-            ->expects($this->never())
-            ->method('execute');
-
-        $request = new Request([], [], [], [], [], [], json_encode([
-            'name' => 'John Doe',
-            'email' => 'invalid-email',
-            'password' => 'password123'
-        ]));
-
-        // Assert
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid email format');
-        
-        // Act
-        $this->controller->handleRegistration($request);
-    }
-
-    public function test_handle_registration_when_user_already_exists_should_return_error(): void
-    {
-        // Arrange
-        $this->registerUseCase
-            ->expects($this->once())
-            ->method('execute')
-            ->willThrowException(new \DomainException('User already exists'));
+        $this->registerUseCase->expects($this->once())
+            ->method('register')
+            ->willThrowException(new UserAlreadyExistsException('User already exists'));
 
         $request = new Request([], [], [], [], [], [], json_encode([
             'name' => 'John Doe',
@@ -110,11 +83,52 @@ class RegisterUserControllerTest extends TestCase
             'password' => 'password123'
         ]));
 
-        // Assert
-        $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage('User already exists');
+        $response = $this->controller->register($request);
+
+        $this->assertEquals(409, $response->getStatusCode());
         
-        // Act
-        $this->controller->handleRegistration($request);
+        $responseData = json_decode($response->getContent(), true);
+        $this->assertEquals([
+            'error' => 'User already exists',
+            'details' => 'User already exists'
+        ], $responseData);
+    }
+
+    public function test_handle_registration_with_invalid_email_should_return_400(): void
+    {
+        $request = new Request([], [], [], [], [], [], json_encode([
+            'name' => 'John Doe',
+            'email' => 'invalid-email',
+            'password' => 'password123'
+        ]));
+
+        $response = $this->controller->register($request);
+
+        $this->assertEquals(400, $response->getStatusCode());
+        
+        $responseData = json_decode($response->getContent(), true);
+        $this->assertEquals([
+            'error' => 'Invalid input data',
+            'details' => 'Invalid email format'
+        ], $responseData);
+    }
+
+    public function test_handle_registration_with_invalid_arguments_should_return_400(): void
+    {
+        $request = new Request([], [], [], [], [], [], json_encode([
+            'name' => '',
+            'email' => 'test@example.com',
+            'password' => 'password123'
+        ]));
+
+        $response = $this->controller->register($request);
+
+        $this->assertEquals(400, $response->getStatusCode());
+        
+        $responseData = json_decode($response->getContent(), true);
+        $this->assertEquals([
+            'error' => 'Invalid input data',
+            'details' => 'Name cannot be empty'
+        ], $responseData);
     }
 }
