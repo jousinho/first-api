@@ -1,0 +1,22 @@
+name: Symfony CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run all test suites
+      run: |
+        chmod +x ./scripts/*.sh
+        ./scripts/test-unit.sh
+        ./scripts/test-integration.sh  
+        ./scripts/test-functional.sh
