@@ -25,9 +25,11 @@ jobs:
     - name: Build and start containers
       run: docker-compose up -d --build
 
-    - name: Install dependencies in container
-      run: docker-compose exec -T --user 1000 php-fpm sh -c "cd /var/www/project && composer install --no-interaction --no-progress"
-
+    - name: Install dependencies
+      run: |
+        docker-compose exec -T --user 1000 php-fpm sh -c "cd /var/www/project && mkdir -p vendor && chmod 755 vendor"
+        docker-compose exec -T --user 1000 php-fpm sh -c "cd /var/www/project && composer install --no-interaction --no-progress"
+        
     - name: Run tests via scripts
       run: |
         ./scripts/test-unit.sh
