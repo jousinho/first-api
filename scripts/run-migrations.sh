@@ -14,7 +14,7 @@ MIGRATIONS_DIR="src/Infrastructure/Persistence/Doctrine/Migrations"
 # fi
 
 # Crear migración
-docker-compose exec "$DOCKER_PHP_SERVICE" bin/console doctrine:migrations:migrate
+docker-compose exec "$DOCKER_PHP_SERVICE" bin/console doctrine:migrations:migrate --env=test
 
 # Ajustar permisos (necesario en Linux/Mac)
 docker-compose exec "$DOCKER_PHP_SERVICE" sh -c "chown $(id -u):$(id -g) $MIGRATIONS_DIR/*"
