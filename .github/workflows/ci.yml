@@ -14,17 +14,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Docker Compose
-      run: |
-        sudo curl -L "https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-        sudo chmod +x /usr/local/bin/docker-compose
-        docker-compose --version
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
 
-    - name: Debug - Show directory structure
-      run: |
-        pwd
-        ls -la
-        find . -name "*.sh" -type f
+    - name: Set up Docker Compose
+      uses: docker/setup-compose-action@v3
+
+    - name: Make scripts executable
+      run: chmod +x ./scripts/*.sh
 
     - name: Start Docker environment
       run: docker-compose up -d
@@ -32,12 +29,17 @@ jobs:
     - name: Wait for services to be ready
       run: sleep 30
 
-    - name: Run all test suites
-      run: |
-        chmod +x ./scripts/*.sh
-        ./scripts/test-unit.sh
-        ./scripts/test-integration.sh  
-        ./scripts/test-functional.sh
+    - name: Install Composer dependencies
+      run: docker-compose exec -T php-fpm composer install --prefer-dist --no-progress --no-interaction
+
+    - name: Run unit tests
+      run: ./scripts/test-unit.sh
+
+    - name: Run integration tests  
+      run: ./scripts/test-integration.sh
+
+    - name: Run functional tests
+      run: ./scripts/test-functional.sh
 
     - name: Stop containers
       if: always()
