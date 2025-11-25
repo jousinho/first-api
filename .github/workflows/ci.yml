@@ -14,11 +14,23 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Set up Docker Compose
+      run: |
+        sudo curl -L "https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        sudo chmod +x /usr/local/bin/docker-compose
+        docker-compose --version
+
     - name: Debug - Show directory structure
       run: |
         pwd
         ls -la
         find . -name "*.sh" -type f
+
+    - name: Start Docker environment
+      run: docker-compose up -d
+
+    - name: Wait for services to be ready
+      run: sleep 30
 
     - name: Run all test suites
       run: |
@@ -26,3 +38,7 @@ jobs:
         ./scripts/test-unit.sh
         ./scripts/test-integration.sh  
         ./scripts/test-functional.sh
+
+    - name: Stop containers
+      if: always()
+      run: docker-compose down
