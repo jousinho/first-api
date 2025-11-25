@@ -25,10 +25,14 @@ jobs:
     - name: Build and start containers
       run: docker-compose up -d --build
 
-    - name: Install dependencies
+    - name: Debug filesystem permissions
       run: |
-        docker-compose exec -T --user root php-fpm sh -c "cd /var/www/project && mkdir -p vendor && chmod 755 vendor"
-        docker-compose exec -T --user 1000 php-fpm sh -c "cd /var/www/project && composer install --no-interaction --no-progress"
+        docker-compose exec -T php-fpm sh -c "cd /var/www/project && mount | grep project"
+        docker-compose exec -T php-fpm sh -c "cd /var/www/project && ls -la && df -h ."
+        docker-compose exec -T php-fpm sh -c "cd /var/www/project && touch test.txt && echo '¿Puede escribir?' && rm -f test.txt"
+
+    - name: Install dependencies
+      run: docker-compose exec -T php-cli sh -c "cd /var/www/project && composer install --no-interaction --no-progress"
 
     - name: Run tests via scripts
       run: |
