@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main, develop ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   tests:
@@ -14,15 +14,26 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Build and test with Docker Compose
+    - name: Install Docker Compose
       run: |
-        # Construir las imágenes
-        docker-compose build
-        
-        # Ejecutar composer install durante el build o aquí
-        docker-compose run --rm php-fpm composer install
-        
-        # Ejecutar los tests
-        docker-compose run --rm php-fpm ./vendor/bin/phpunit tests/Unit
-        docker-compose run --rm php-fpm ./vendor/bin/phpunit tests/Integration
-        docker-compose run --rm php-fpm ./vendor/bin/phpunit tests/Functional
+        sudo curl -L "https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        sudo chmod +x /usr/local/bin/docker-compose
+
+    - name: Make scripts executable
+      run: chmod +x ./scripts/*.sh
+
+    - name: Build and start containers
+      run: docker-compose up -d --build
+
+    - name: Install dependencies in container
+      run: docker-compose exec -T php-fpm composer install --no-interaction --no-progress
+
+    - name: Run tests via scripts
+      run: |
+        ./scripts/test-unit.sh
+        ./scripts/test-integration.sh
+        ./scripts/test-functional.sh
+
+    - name: Stop containers
+      if: always()
+      run: docker-compose down
