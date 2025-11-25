@@ -26,7 +26,9 @@ jobs:
       run: docker-compose up -d --build
 
     - name: Install dependencies
-      run: docker-compose exec -T php-fpm sh -c "cd /var/www/project && composer install --no-interaction --no-progress"
+      run: |
+        docker-compose exec -T php-fpm sh -c "cd /var/www/project && mkdir -p vendor && chmod 755 vendor"
+        docker-compose exec -T php-fpm sh -c "cd /var/www/project && composer install --no-interaction --no-progress"
 
     - name: Run tests via scripts
       run: |
