@@ -2,7 +2,7 @@ name: Symfony CI
 
 on:
   push:
-    branches: [ master, develop ]
+    branches: [ main, develop ]
   pull_request:
     branches: [ master ]
 
@@ -14,33 +14,15 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Install Docker Compose
+    - name: Build and test with Docker Compose
       run: |
-        sudo curl -L "https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-        sudo chmod +x /usr/local/bin/docker-compose
-        docker-compose --version
-
-    - name: Make scripts executable
-      run: chmod +x ./scripts/*.sh
-
-    - name: Start Docker environment
-      run: docker-compose up -d
-
-    - name: Wait for services to be ready
-      run: sleep 30
-
-    - name: Install Composer dependencies
-      run: docker-compose exec -T php-fpm composer install --prefer-dist --no-progress --no-interaction
-
-    - name: Run unit tests
-      run: ./scripts/test-unit.sh
-
-    - name: Run integration tests  
-      run: ./scripts/test-integration.sh
-
-    - name: Run functional tests
-      run: ./scripts/test-functional.sh
-
-    - name: Stop containers
-      if: always()
-      run: docker-compose down
+        # Construir las imágenes
+        docker-compose build
+        
+        # Ejecutar composer install durante el build o aquí
+        docker-compose run --rm php-fpm composer install
+        
+        # Ejecutar los tests
+        docker-compose run --rm php-fpm ./vendor/bin/phpunit tests/Unit
+        docker-compose run --rm php-fpm ./vendor/bin/phpunit tests/Integration
+        docker-compose run --rm php-fpm ./vendor/bin/phpunit tests/Functional
