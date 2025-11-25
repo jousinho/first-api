@@ -1,19 +1,11 @@
-#!/bin/bash
-
-# USO:
-# ./scripts/test-integration.sh           → Todos los tests
-# ./scripts/test-integration.sh Product   → Solo tests de Product
-# ./scripts/test-integration.sh --filter testSave → Solo métodos con 'testSave'
-
-# Configuración
-DOCKER_PHP_SERVICE="php-fpm"
 TESTS_DIR="tests/Integration"
+DOCKER_CONTAINER="php-fpm"
 
-# Ejecutar tests (pasando argumentos al comando PHPUnit)
+# Ejecución en el contenedor
 if [ $# -eq 0 ]; then
-  docker-compose exec -T "$DOCKER_PHP_SERVICE" ./vendor/bin/phpunit "$TESTS_DIR"
+    docker-compose exec -T $DOCKER_CONTAINER sh -c "cd /var/www/project && ./vendor/bin/phpunit $TESTS_DIR"
 else
-  docker-compose exec -T "$DOCKER_PHP_SERVICE" ./vendor/bin/phpunit "$TESTS_DIR" "$@"
+    docker-compose exec -T $DOCKER_CONTAINER sh -c "cd /var/www/project && ./vendor/bin/phpunit $TESTS_DIR --filter \"$@\""
 fi
 
 # Opcional: Mostrar logs de DB solo si fallan

@@ -1,17 +1,15 @@
-#!/bin/bash
-
-# USO: 
-# ./scripts/test-unit.sh       → Ejecuta TODOS los tests unitarios
-### NO FUNCIONA ### ./scripts/test-unit.sh ProductTest → Ejecuta solo tests en ProductTest
-# ./scripts/test-unit.sh --filter testCreate → Ejecuta métodos que contengan 'testCreate'
-
-# Configuración
 TESTS_DIR="tests/Unit"
 DOCKER_CONTAINER="php-fpm"
 
 # Ejecución en el contenedor
 if [ $# -eq 0 ]; then
-    docker-compose exec -T $DOCKER_CONTAINER ./vendor/bin/phpunit $TESTS_DIR
+    docker-compose exec -T $DOCKER_CONTAINER sh -c "cd /var/www/project && ./vendor/bin/phpunit $TESTS_DIR"
 else
-    docker-compose exec -T $DOCKER_CONTAINER ./vendor/bin/phpunit $TESTS_DIR --filter "$@"
+    docker-compose exec -T $DOCKER_CONTAINER sh -c "cd /var/www/project && ./vendor/bin/phpunit $TESTS_DIR --filter \"$@\""
+fi
+
+# Opcional: Mostrar logs de DB solo si fallan
+if [ $? -ne 0 ]; then
+    echo "🔍 Mostrando logs de DB por fallo:"
+    docker-compose logs db_test | tail -n 20
 fi
