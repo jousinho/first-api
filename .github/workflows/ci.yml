@@ -19,20 +19,25 @@ jobs:
         sudo curl -L "https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
         sudo chmod +x /usr/local/bin/docker-compose
 
+    - name: Cache Composer packages
+      uses: actions/cache@v3
+      with:
+        path: /tmp/composer-cache
+        key: ${{ runner.os }}-composer-${{ hashFiles('symfony/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-composer-
+
+    - name: Install dependencies locally
+      run: |
+        cd symfony
+        COMPOSER_CACHE_DIR=/tmp/composer-cache composer install --no-interaction --no-progress
+        cd ..
+
     - name: Make scripts executable
       run: chmod +x ./scripts/*.sh
 
     - name: Build and start containers
       run: docker-compose up -d --build
-
-    - name: Debug filesystem permissions
-      run: |
-        docker-compose exec -T php-fpm sh -c "cd /var/www/project && mount | grep project"
-        docker-compose exec -T php-fpm sh -c "cd /var/www/project && ls -la && df -h ."
-        docker-compose exec -T php-fpm sh -c "cd /var/www/project && touch test.txt && echo '¿Puede escribir?' && rm -f test.txt"
-
-    - name: Install dependencies
-      run: docker-compose exec -T php-cli sh -c "cd /var/www/project && composer install --no-interaction --no-progress"
 
     - name: Run tests via scripts
       run: |
