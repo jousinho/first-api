@@ -25,6 +25,12 @@ jobs:
     - name: Build and start containers
       run: docker-compose up -d --build
 
+    - name: Debug - Check users in container
+      run: |
+        docker-compose exec -T php-fpm cat /etc/passwd | tail -10
+        docker-compose exec -T php-fpm whoami
+        docker-compose exec -T php-fpm id
+
     - name: Install dependencies
       run: |
         docker-compose exec -T php-fpm sh -c "cd /var/www/project && mkdir -p vendor && chmod 755 vendor"
