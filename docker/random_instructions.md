@@ -1,7 +1,7 @@
 Enter db container
 
 # Acceder al contenedor de la DB de test
-docker exec -it first-api-db_test-1 mysql -u user -p db_test
+docker exec -it first-api-db_test-1 mysql -u user -p
 
 # Una vez dentro, puedes ejecutar queries:
 SHOW TABLES;

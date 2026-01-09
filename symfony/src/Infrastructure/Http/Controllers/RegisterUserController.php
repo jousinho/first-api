@@ -9,8 +9,10 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Application\Exception\InvalidArgumentException;
 use App\Domain\Exception\UserAlreadyExistsException;
 use App\Domain\Exception\InvalidEmailException;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 
-class RegisterUserController
+class RegisterUserController extends AbstractController
 {
     public function __construct(
         private RegisterUseCase $registerUseCase
@@ -59,5 +61,11 @@ class RegisterUserController
             ], 500);
 
         }
+    }
+
+    #[Route('/register', name: 'register_form', methods: ['GET'])]
+    public function showRegistrationForm(): Response
+    {
+        return $this->render('@views/registerUser.html.twig');
     }
 }

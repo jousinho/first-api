@@ -1,0 +1,309 @@
+{# @views/register.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Registro de Usuario{% endblock %}
+
+{% block stylesheets %}
+<style>
+    :root {
+        --primary-color: #2563eb;
+        --primary-hover: #1d4ed8;
+        --error-color: #dc2626;
+        --success-color: #16a34a;
+        --text-color: #374151;
+        --border-color: #d1d5db;
+        --bg-color: #f9fafb;
+    }
+    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.6;
+    }
+    
+    .container {
+        max-width: 400px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+    
+    .card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        overflow: hidden;
+    }
+    
+    .card-header {
+        background: var(--primary-color);
+        color: white;
+        padding: 1.5rem;
+        text-align: center;
+    }
+    
+    .card-header h3 {
+        font-weight: 600;
+        font-size: 1.5rem;
+    }
+    
+    .card-body {
+        padding: 2rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--text-color);
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 2px solid var(--border-color);
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+    }
+    
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    
+    .form-control.error {
+        border-color: var(--error-color);
+    }
+    
+    .btn {
+        width: 100%;
+        padding: 0.75rem 1.5rem;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .btn:hover {
+        background: var(--primary-hover);
+        transform: translateY(-1px);
+    }
+    
+    .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    .alert {
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+        display: none;
+    }
+    
+    .alert-success {
+        background: #dcfce7;
+        color: var(--success-color);
+        border: 1px solid #bbf7d0;
+    }
+    
+    .alert-error {
+        background: #fee2e2;
+        color: var(--error-color);
+        border: 1px solid #fecaca;
+    }
+    
+    .error-message {
+        color: var(--error-color);
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        display: none;
+    }
+    
+    .spinner {
+        display: inline-block;
+        width: 1rem;
+        height: 1rem;
+        border: 2px solid transparent;
+        border-top: 2px solid currentColor;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-right: 0.5rem;
+        vertical-align: middle;
+    }
+    
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+    
+    .hidden {
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3>Registro de Usuario</h3>
+        </div>
+        <div class="card-body">
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="name" class="form-label">Nombre completo</label>
+                    <input type="text" 
+                           class="form-control" 
+                           id="name" 
+                           name="name" 
+                           required
+                           placeholder="Ingresa tu nombre completo">
+                    <div class="error-message" id="nameError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" 
+                           class="form-control" 
+                           id="email" 
+                           name="email" 
+                           required
+                           placeholder="ejemplo@correo.com">
+                    <div class="error-message" id="emailError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" 
+                           class="form-control" 
+                           id="password" 
+                           name="password" 
+                           required
+                           placeholder="Crea una contraseña segura">
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+
+                <button type="submit" class="btn" id="submitBtn">
+                    <span id="submitText">Registrarse</span>
+                    <span class="spinner hidden" id="submitSpinner"></span>
+                </button>
+            </form>
+
+            <div id="successMessage" class="alert alert-success" role="alert">
+                ¡Registro exitoso! Redirigiendo...
+            </div>
+
+            <div id="errorMessage" class="alert alert-error" role="alert">
+                Ha ocurrido un error durante el registro.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+// El mismo JavaScript que teníamos antes funciona perfectamente
+document.getElementById('registerForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const submitBtn = document.getElementById('submitBtn');
+    const submitText = document.getElementById('submitText');
+    const submitSpinner = document.getElementById('submitSpinner');
+    const successMessage = document.getElementById('successMessage');
+    const errorMessage = document.getElementById('errorMessage');
+    
+    // Reset estados
+    successMessage.style.display = 'none';
+    errorMessage.style.display = 'none';
+    document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+    document.querySelectorAll('.error-message').forEach(el => {
+        el.style.display = 'none';
+        el.textContent = '';
+    });
+    
+    // Mostrar loading
+    submitText.textContent = 'Registrando...';
+    submitSpinner.classList.remove('hidden');
+    submitBtn.disabled = true;
+    
+    // Obtener datos del formulario
+    const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value
+    };
+    
+    // Enviar petición
+    fetch('{{ path('register_user') }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                throw new Error(data.message || 'Error en el registro');
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Éxito
+        successMessage.style.display = 'block';
+        
+        // Redirigir después de 2 segundos
+        setTimeout(() => {
+            window.location.href = '{{ path('registration_success') }}';
+        }, 2000);
+    })
+    .catch(error => {
+        // Error
+        errorMessage.textContent = error.message || 'Ha ocurrido un error durante el registro';
+        errorMessage.style.display = 'block';
+        
+        // Manejar errores de validación específicos
+        if (error.message.includes('email')) {
+            document.getElementById('email').classList.add('error');
+            document.getElementById('emailError').textContent = error.message;
+            document.getElementById('emailError').style.display = 'block';
+        }
+        if (error.message.includes('nombre') || error.message.includes('name')) {
+            document.getElementById('name').classList.add('error');
+            document.getElementById('nameError').textContent = error.message;
+            document.getElementById('nameError').style.display = 'block';
+        }
+        if (error.message.includes('contraseña') || error.message.includes('password')) {
+            document.getElementById('password').classList.add('error');
+            document.getElementById('passwordError').textContent = error.message;
+            document.getElementById('passwordError').style.display = 'block';
+        }
+    })
+    .finally(() => {
+        // Restaurar botón
+        submitText.textContent = 'Registrarse';
+        submitSpinner.classList.add('hidden');
+        submitBtn.disabled = false;
+    });
+});
+</script>
+{% endblock %}
