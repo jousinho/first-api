@@ -1,13 +1,11 @@
 <?php 
-namespace App\Tests\Integration\Application\UseCase;
+namespace App\Tests\Integration\Application\Users\UseCase\Register;     
 
-use App\Application\UseCase\User\RegisterUseCase;
+use App\Application\Users\UseCase\Register\RegisterUseCase; 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use App\Domain\Repository\UserRepositoryInterface;
-use App\Domain\Model\User;
-use App\Tests\ResetDatabaseTrait;
+use App\Tests\ResetDatabaseTrait;   
 use Doctrine\ORM\EntityManagerInterface;
-use App\Infrastructure\Http\Commands\RegisterUserCommand;
+use App\Infrastructure\Users\Http\Commands\RegisterUserCommand; 
 
 final class RegisterUseCaseTest extends KernelTestCase
 {

@@ -1,6 +1,7 @@
 doctrine_migrations:
     migrations_paths:
-        'App\Infrastructure\Persistence\Doctrine\Migrations': '%kernel.project_dir%/src/Infrastructure/Persistence/Doctrine/Migrations'
+        'App\Infrastructure\Shared\Persistence\Doctrine\Migrations':
+            '%kernel.project_dir%/src/Infrastructure/Shared/Persistence/Doctrine/Migrations'
     
     storage:
         table_storage:
