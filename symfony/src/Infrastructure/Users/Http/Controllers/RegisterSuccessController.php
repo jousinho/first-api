@@ -11,6 +11,6 @@ class RegisterSuccessController extends AbstractController
     #[Route('/registration-success', name: 'registration_success')]
     public function success(): Response
     {
-        return $this->render('@views/Users/Http/Resources/views/registrationSuccess.html.twig');
+        return $this->render('@users/registrationSuccess.html.twig');
     }
 }

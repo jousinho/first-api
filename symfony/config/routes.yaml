@@ -6,9 +6,7 @@
 #             - '../src/Infrastructure/*/Persistence/'
 #             - '../src/Infrastructure/Shared/Persistence/'
 #     type: attribute
-    # Esto importa TODOS los controllers, pero puede importar duplicados
 
 controllers:
-    # Esto DEBERÍA funcionar si la ruta apunta DIRECTAMENTE a controllers
-    resource: ../src/Infrastructure/**/Http/Controllers/
+    resource:  '../src/Infrastructure/**/Http/Controllers/*Controller.php'
     type: attribute

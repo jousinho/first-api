@@ -65,6 +65,6 @@ class RegisterUserController extends AbstractController
     #[Route('/register', name: 'register_form', methods: ['GET'])]
     public function showRegistrationForm(): Response
     {
-        return $this->render('@views/Users/Http/Resources/views/registerUser.html.twig');
+        return $this->render('@users/registerUser.html.twig');
     }
 }
