@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Users\Persistence;     
+namespace App\Infrastructure\Users\Persistence;
 
 use App\Domain\Users\Model\User;
 use App\Domain\Users\Repository\UserRepositoryInterface;

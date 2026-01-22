@@ -1,0 +1,168 @@
+[33mcommit f2a73aa75f791ad618eb1a2d733a4564ae10e669[m[33m ([m[1;36mHEAD -> [m[1;32mrefactor/add_domains[m[33m)[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Tue Jan 20 13:15:53 2026 +0100
+
+    feature(domain) modified domain structure + unit tests green
+
+[33mcommit bbc8851f2ce7a7f2654d8be04676781d718e8568[m[33m ([m[1;31morigin/feature/register_template[m[33m, [m[1;32mmaster[m[33m, [m[1;32mfeature/register_template[m[33m)[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Fri Jan 9 17:33:52 2026 +0100
+
+    feature(register) added basic twigs
+
+[33mcommit 03401d0b4996cd5f8888c68a93abdca5238f6c8d[m[33m ([m[1;31morigin/master[m[33m)[m
+Merge: 78cc7cb f23fb41
+Author: jousinho <jousinho@gmail.com>
+Date:   Tue Nov 25 19:24:09 2025 +0100
+
+    Merge branch 'feature/user_login_basic'
+
+[33mcommit 78cc7cbbb3eef099f528931c09d5c9dfb30d3439[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Tue Nov 25 19:23:08 2025 +0100
+
+    fix(ci) new strategy
+
+[33mcommit a2d992d38a2911ca8d0868e1acec63dc4401bd9b[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Tue Nov 25 19:16:16 2025 +0100
+
+    fix(ci) added debug
+
+[33mcommit 269fae952dae8cc0bfdc037ad258f83534bd650d[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Tue Nov 25 19:08:04 2025 +0100
+
+    fix(ci) added root to create vendor
+
+[33mcommit 26f14f5e26cd0713d83bd1a87fcb4ce36de24d7d[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Tue Nov 25 19:03:03 2025 +0100
+
+    fix(ci) fixed user added to create vendor folder
+
+[33mcommit a3b6f2447b3dca1eb1df8fc31319e3075c20e43e[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Tue Nov 25 18:56:06 2025 +0100
+
+    fix(ci) fixed user
+
+[33mcommit 74f88c8276c2ee5ae01bff3742e123390442e3c8[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Tue Nov 25 18:48:48 2025 +0100
+
+    fix(ci) check which user
+
+[33mcommit 36c2846873ab66e40399cc4c624fd707a3e6d0ab[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Tue Nov 25 18:44:47 2025 +0100
+
+    fix(ci) fixed forcing vendor create
+
+[33mcommit c44cdf1bd8561bbeeb45ded70e1b6c77ab58bf0f[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Tue Nov 25 18:41:54 2025 +0100
+
+    fix(ci) fixed user
+
+[33mcommit 5c88b93a5fca3b5197d72eeb58f5d4af7a1c8d8b[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Tue Nov 25 18:34:38 2025 +0100
+
+    fix(ci) fixed user
+
+[33mcommit b2ed8b62389446c07b528a2ca772a0c47014850c[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Tue Nov 25 18:17:33 2025 +0100
+
+    fix(ci) changed php-fpm for php-cli
+
+[33mcommit d1605639ac382a49869ae6e971f72bbf21f6201f[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Tue Nov 25 18:11:22 2025 +0100
+
+    fix(ci) refactor all scripts and ci
+
+[33mcommit 4c03b99f5a3878db987d5a9b777bef34e8dde073[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Tue Nov 25 17:54:34 2025 +0100
+
+    fix(ci) first version updated again
+
+[33mcommit f37a0b7b6c60e5f6cfdcc39f5210d8b364d09cab[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Tue Nov 25 17:53:39 2025 +0100
+
+    fix(ci) first version updated
+
+[33mcommit e7635c98cc93f8d7ed69612b66e4eaadf73ecc1d[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Tue Nov 25 17:34:33 2025 +0100
+
+    fix(ci) second version
+
+[33mcommit 52dc15687dfd556967c564e72ed3204656b566ef[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Tue Nov 25 17:25:43 2025 +0100
+
+    fix(ci) added composer install
+
+[33mcommit 1c7584d4f0d5f70d8ef12dea8926f1cda030a92a[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Tue Nov 25 17:23:20 2025 +0100
+
+    fix(ci) added composer install
+
+[33mcommit c354c34d92e91d6f2cd40d8e36631425e55eb38c[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Tue Nov 25 17:16:28 2025 +0100
+
+    fix(ci) added docker compose config
+
+[33mcommit 78989efbfeff34ca17858c7964b63d5f17258f3d[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Tue Nov 25 17:08:02 2025 +0100
+
+    fix(ci) added debug to know tests script path
+
+[33mcommit f3e06401d48a03374f1b26ae169ab511bf67d557[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Mon Nov 24 20:11:59 2025 +0100
+
+    fix(ci) fix scripts path ci.yml
+
+[33mcommit 27e3b10ca03ae51c6809a9704cb0c8dcaebfb2a9[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Mon Nov 24 19:55:24 2025 +0100
+
+    feature(ci) added ci.yml
+
+[33mcommit f23fb41de0f523049eeab149b41a2f2eabc1ee31[m[33m ([m[1;31morigin/feature/user_login_basic[m[33m, [m[1;32mfeature/user_login_basic[m[33m)[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Mon Nov 24 18:55:51 2025 +0100
+
+    feature(register) added commands + tests
+
+[33mcommit 4dd09a18adb8b2c823ef302ee534b310a7df3b5f[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Mon Nov 10 19:42:15 2025 +0100
+
+    feature(register) added register fields + test unit integ funct (still to get green)
+
+[33mcommit 1426b72d386eaab203a9407d7a02fb320f2712ff[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Fri Oct 17 11:58:32 2025 +0200
+
+    refactor(controllers) modified controllers folder
+
+[33mcommit 9a2700e2764684197007e999b96f1c4c789bb7a8[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Thu Sep 25 11:49:10 2025 +0200
+
+    feature(api) first controller and service with twig render
+
+[33mcommit 4873af8fcdf73db2f125165f53c00e6f09f52183[m
+Author: jousinho <jousinho@gmail.com>
+Date:   Wed Aug 27 10:48:32 2025 +0200
+
+    feature(first-api) first commit

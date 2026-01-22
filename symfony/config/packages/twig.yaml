@@ -1,6 +1,6 @@
 twig:
     paths:
-        '%kernel.project_dir%/src/Infrastructure/Http/Resources/views': views
+        '%kernel.project_dir%/src/Infrastructure': views           
     globals:
         app_version: '%env(APP_VERSION)%'
 

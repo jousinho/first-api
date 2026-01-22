@@ -1,16 +1,15 @@
 <?php
-namespace App\Infrastructure\Users\Http\Controllers;  
+namespace App\Infrastructure\Users\Http\Controllers;
 
-use App\Infrastructure\Users\Http\Commands\RegisterUserCommand;
+use App\Infrastructure\Users\Http\Commands\RegisterUserCommand; 
 use App\Application\Users\UseCase\Register\RegisterUseCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Attribute\Route;
-use App\Application\Users\Exception\InvalidArgumentException;
-use App\Domain\Users\Exception\UserAlreadyExistsException;
-use App\Domain\Users\Exception\InvalidEmailException;
+use Symfony\Component\Routing\Attribute\Route;  
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use App\Domain\Users\Exception\UserAlreadyExistsException;
+use App\Domain\Users\Exception\InvalidEmailException;
 
 class RegisterUserController extends AbstractController
 {
@@ -66,6 +65,6 @@ class RegisterUserController extends AbstractController
     #[Route('/register', name: 'register_form', methods: ['GET'])]
     public function showRegistrationForm(): Response
     {
-        return $this->render('@views/registerUser.html.twig');
+        return $this->render('@views/Users/Http/Resources/views/registerUser.html.twig');
     }
 }

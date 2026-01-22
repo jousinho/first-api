@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Shared\Persistence\Doctrine\Migrations\2025;   
+namespace App\Infrastructure\Shared\Persistence\Doctrine\Migrations;   
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;

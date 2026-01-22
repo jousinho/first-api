@@ -1,3 +1,14 @@
+# controllers:
+#     resource:
+#         path: ../src/Infrastructure/
+#         namespace: App\Infrastructure
+#         exclude: 
+#             - '../src/Infrastructure/*/Persistence/'
+#             - '../src/Infrastructure/Shared/Persistence/'
+#     type: attribute
+    # Esto importa TODOS los controllers, pero puede importar duplicados
+
 controllers:
-    resource: ../src/Infrastructure/Http/
+    # Esto DEBERÍA funcionar si la ruta apunta DIRECTAMENTE a controllers
+    resource: ../src/Infrastructure/**/Http/Controllers/
     type: attribute

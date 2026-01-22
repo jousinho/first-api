@@ -3,6 +3,8 @@ namespace App\Tests\Integration\Application\Users\UseCase\Register;
 
 use App\Application\Users\UseCase\Register\RegisterUseCase; 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Domain\Users\Repository\UserRepositoryInterface;
+use App\Domain\Users\Model\User;    
 use App\Tests\ResetDatabaseTrait;   
 use Doctrine\ORM\EntityManagerInterface;
 use App\Infrastructure\Users\Http\Commands\RegisterUserCommand; 
