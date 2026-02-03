@@ -1,7 +1,9 @@
 twig:
     paths:
-        '%kernel.project_dir%/src/Infrastructure/Users/Http/Resources/views': 'users'
+        #base.html.twig
         '%kernel.project_dir%/src/Infrastructure/Shared/Templates': ~
+
+        '%kernel.project_dir%/src/Infrastructure/Users/Http/Resources/views': 'users'
     globals:
         app_version: '%env(APP_VERSION)%'
         
