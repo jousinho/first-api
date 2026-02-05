@@ -32,3 +32,11 @@ services:
     # 4. SERVICIOS ESPECÍFICOS que necesitan configuración especial
     App\Application\Users\UseCase\Register\RegisterUseCase:
         public: true  # Solo si realmente necesita ser público (para tests)
+
+    App\Infrastructure\BetDataProvider\Http\Client\FootballDataRawClient:
+        arguments:
+            $apiKey: '%env(FOOTBALL_DATA_API_KEY)%'
+            $httpClient: '@http_client'
+            $cache: '@cache.app'
+    
+    App\Application\BetDataProvider\UseCase\BetDataProviderTransformer:
