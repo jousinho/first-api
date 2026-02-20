@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Functional\Infrastructure\Http\Controllers;
+namespace App\Tests\Functional\Infrastructure\Users\Http\Controllers;
 
 use App\Infrastructure\Http\Commands\RegisterUserCommand;
 use App\Application\UseCase\User\RegisterUseCase;

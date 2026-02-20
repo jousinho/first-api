@@ -1,16 +1,20 @@
 <?php
 
-namespace App\Application\BetDataProvider\Command;             // Este comando es el que se encarga de procesar los datos de la petición
+namespace App\Application\BetDataProvider\Command; 
 
 class BetDataProviderCommand
 {
+    public const FOOTBALL_DATA = 'football-data';
+    public const API_FOOTBALL = 'api-football';
+
     private function __construct(
         public readonly string $provider,
         public readonly string $leagueCode,
         public readonly int $season
     ) {
         $this->validate();
-    }
+
+        }
 
     public static function create(
         string $provider, 
@@ -28,7 +32,7 @@ class BetDataProviderCommand
     private function validate(): void
     {
         $this->validateProvider();
-        $this->validateLeagueCode();
+        //$this->validateLeagueCode();
         $this->validateSeason();
     }
 
@@ -36,6 +40,10 @@ class BetDataProviderCommand
     {
         if (empty(trim($this->provider))) {
             throw new \InvalidArgumentException('Provider cannot be empty');
+        }
+
+        if (!in_array(trim($this->provider), self::availableProviders())) {
+            throw new \InvalidArgumentException('Invalid Provider');
         }
     }
 
@@ -51,12 +59,20 @@ class BetDataProviderCommand
         return trim($this->provider);
     }
 
+    public static function availableProviders(): array
+    {
+        return [
+            self::FOOTBALL_DATA,
+            self::API_FOOTBALL,
+        ];
+    }
+
     public function leagueCode(): string 
     {
         return strtolower(trim($this->leagueCode));
     }
 
-    public function season(): int 
+    public function season(): ?int 
     {
         return $this->season;
     }
