@@ -380,4 +380,70 @@ class FootballDataTransformerTest extends TestCase
             ]
         ];
     }
+
+    public function testTransformTeamLeagueMatchesReturnsCorrectStructure(): void
+    {
+        $teamId = 81; // Barça
+        $leagueCode = 'PD';
+        $rawData = $this->getMockBarcelonaMatchesData();
+        
+        $result = $this->transformer->transformTeamLeagueMatches($rawData, $teamId, $leagueCode);
+        
+        // Estructura básica
+        $this->assertArrayHasKey('team', $result);
+        $this->assertArrayHasKey('form', $result);
+        $this->assertArrayHasKey('stats', $result);
+        $this->assertArrayHasKey('last_matches', $result);
+        
+        // Team
+        $this->assertSame(81, $result['team']['id']);
+        $this->assertSame('FC Barcelona', $result['team']['name']);
+        $this->assertSame('PD', $result['team']['league']);
+        $this->assertSame('La Liga', $result['team']['league_name']);
+        
+        // Form debe tener 3 claves
+        $this->assertArrayHasKey('last_5_home', $result['form']);
+        $this->assertArrayHasKey('last_5_away', $result['form']);
+        $this->assertArrayHasKey('last_5_overall', $result['form']);
+    }
+
+    private function getMockBarcelonaMatchesData(): array
+    {
+        return [
+            'matches' => [
+                [
+                    'id' => 1,
+                    'status' => 'FINISHED',
+                    'utcDate' => '2024-02-10T20:00:00Z',
+                    'matchday' => 24,
+                    'homeTeam' => ['id' => 81, 'name' => 'FC Barcelona'],
+                    'awayTeam' => ['id' => 86, 'name' => 'Real Madrid'],
+                    'score' => ['fullTime' => ['home' => 2, 'away' => 1]],
+                    'competition' => ['code' => 'PD', 'name' => 'Primera Division']
+                ],
+                [
+                    'id' => 2,
+                    'status' => 'FINISHED',
+                    'utcDate' => '2024-02-03T18:30:00Z',
+                    'matchday' => 23,
+                    'homeTeam' => ['id' => 77, 'name' => 'Athletic Bilbao'],
+                    'awayTeam' => ['id' => 81, 'name' => 'FC Barcelona'],
+                    'score' => ['fullTime' => ['home' => 0, 'away' => 3]],
+                    'competition' => ['code' => 'PD', 'name' => 'Primera Division']
+                ],
+                [
+                    'id' => 3,
+                    'status' => 'FINISHED',
+                    'utcDate' => '2024-01-27T16:15:00Z',
+                    'matchday' => 22,
+                    'homeTeam' => ['id' => 81, 'name' => 'FC Barcelona'],
+                    'awayTeam' => ['id' => 83, 'name' => 'Sevilla'],
+                    'score' => ['fullTime' => ['home' => 1, 'away' => 1]],
+                    'competition' => ['code' => 'PD', 'name' => 'Primera Division']
+                ],
+            ]
+        ];
+    }
+
+    
 }

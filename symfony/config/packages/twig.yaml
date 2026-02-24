@@ -4,6 +4,7 @@ twig:
         '%kernel.project_dir%/src/Infrastructure/Shared/Templates': ~
 
         '%kernel.project_dir%/src/Infrastructure/Users/Http/Resources/views': 'users'
+        '%kernel.project_dir%/src/Infrastructure/BetDataProvider/Http/Resources/views': 'bets'
     globals:
         app_version: '%env(APP_VERSION)%'
         

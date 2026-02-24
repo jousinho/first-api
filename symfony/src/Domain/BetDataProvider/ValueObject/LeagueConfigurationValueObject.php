@@ -113,4 +113,37 @@ class LeagueConfigurationValueObject
 
         return $leagueNames;
     }
+
+    public static function getTeamsByLeague(string $leagueCode): array
+    {
+        return self::LEAGUES[$leagueCode]['teams'] ?? [];
+    }
+
+    public static function getAllLeagues(): array
+    {
+        $leagues = [];
+        foreach (self::LEAGUES as $code => $data) {
+            $leagues[$code] = [
+                'code' => $code,
+                'name' => $data['name'],
+                'flag' => self::getFlagEmoji($code),
+                'teams_count' => count($data['teams']),
+                'teams' => $data['teams']
+            ];
+        }
+        return $leagues;
+    }
+
+    public static function getFlagEmoji(string $leagueCode): string
+    {
+        return match($leagueCode) {
+            'PD' => '🇪🇸',
+            'PL' => '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+            'SA' => '🇮🇹',
+            'BL1' => '🇩🇪',
+            'FL1' => '🇫🇷',
+            'PPL' => '🇵🇹',
+            default => '🏆'
+        };
+    }
 }

@@ -1,0 +1,123 @@
+{# templates/bet_data_provider/league_stats.html.twig #}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ league.name }} - Estadísticas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-slate-50 font-[Inter]">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Cabecera con navegación -->
+        <div class="mb-8">
+            <a href="{{ path('home') }}" class="inline-flex items-center text-blue-600 hover:text-blue-800">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Volver a ligas
+            </a>
+        </div>
+
+        <!-- Título de la liga -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+            <div class="flex items-center gap-4">
+                <span class="text-6xl">{{ league.flag }}</span>
+                <div>
+                    <h1 class="text-4xl font-bold text-slate-800">{{ league.name }}</h1>
+                    <p class="text-slate-500 mt-1">{{ league.teams_count }} equipos analizados</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grid de equipos -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {% for team in teams %}
+            <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
+                <!-- Cabecera del equipo -->
+                <div class="bg-gradient-to-r from-slate-800 to-slate-700 px-6 py-4">
+                    <h3 class="text-xl font-bold text-white">{{ team.team_name }}</h3>
+                </div>
+                
+                <!-- Forma reciente -->
+                <div class="p-6 border-b border-slate-100">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-sm font-semibold text-slate-500">Últimos 5 partidos</span>
+                        <div class="flex gap-1">
+                            {% for char in team.form.last_5_overall|split('') %}
+                                <span class="w-8 h-8 flex items-center justify-center rounded-full 
+                                    {% if char == 'W' %}bg-green-500 text-white
+                                    {% elseif char == 'D' %}bg-yellow-500 text-white
+                                    {% elseif char == 'L' %}bg-red-500 text-white
+                                    {% else %}bg-slate-200 text-slate-700{% endif %} 
+                                    font-bold text-sm">
+                                    {{ char }}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4 mt-4">
+                        <!-- Local -->
+                        <div class="text-center p-3 bg-slate-50 rounded-lg">
+                            <div class="text-xs text-slate-500 mb-1">🏠 Local</div>
+                            <div class="text-lg font-bold text-slate-800">
+                                {{ team.form.last_5_home }}
+                            </div>
+                            <div class="text-sm text-slate-600 mt-1">
+                                {{ team.stats.home.avg_goals_for }} g/f
+                            </div>
+                        </div>
+                        <!-- Visitante -->
+                        <div class="text-center p-3 bg-slate-50 rounded-lg">
+                            <div class="text-xs text-slate-500 mb-1">✈️ Visitante</div>
+                            <div class="text-lg font-bold text-slate-800">
+                                {{ team.form.last_5_away }}
+                            </div>
+                            <div class="text-sm text-slate-600 mt-1">
+                                {{ team.stats.away.avg_goals_for }} g/f
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Estadísticas -->
+                <div class="p-6 grid grid-cols-3 gap-4 text-center">
+                    <div>
+                        <div class="text-2xl font-bold text-slate-800">{{ team.stats.overall.wins }}</div>
+                        <div class="text-xs text-slate-500">Victorias</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-slate-800">{{ team.stats.overall.draws }}</div>
+                        <div class="text-xs text-slate-500">Empates</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-slate-800">{{ team.stats.overall.losses }}</div>
+                        <div class="text-xs text-slate-500">Derrotas</div>
+                    </div>
+                </div>
+                
+                <!-- Últimos resultados -->
+                <div class="px-6 pb-6">
+                    <div class="text-xs text-slate-500 mb-2">Últimos 5 resultados:</div>
+                    <div class="flex gap-2">
+                        {% for match in team.last_matches|slice(0, 5) %}
+                        <div class="flex-1 text-center p-2 rounded 
+                            {% if match.result == 'WIN' %}bg-green-100 text-green-800
+                            {% elseif match.result == 'DRAW' %}bg-yellow-100 text-yellow-800
+                            {% elseif match.result == 'LOSS' %}bg-red-100 text-red-800
+                            {% endif %}">
+                            <div class="text-xs font-bold">{{ match.score }}</div>
+                            <div class="text-[10px] mt-1">{{ match.opponent|slice(0, 3) }}..</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
